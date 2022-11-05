@@ -1,3 +1,5 @@
+import { buildQueries } from '@testing-library/react';
+import { editableInputTypes } from '@testing-library/user-event/dist/utils';
 import React, {useState} from 'react';
 import { Container, Form, FormLabel, Button } from 'react-bootstrap';
 
@@ -9,14 +11,31 @@ const Contact = () => {
   const [email, setEmail]=useState('')
  const [message, setMessage]=useState('')
   const [error, setError]=useState(false)
+  var successful= document.getElementById('btn__submit')
+  const submition=document.querySelector(".send-message");
+  const text =document.querySelector(".success");
+  const fields =document.querySelectorAll('input');
+  const textarea =document.querySelectorAll('textarea');
+  var check = document.getElementById('checker');
  
   const handleSubmit=(e)=>{
 e.preventDefault();
 if(firstName.length==0||lastName.length==0||email.length==0||message.length==0){
-  setError(true)
+  setError(true);
+  text.style.display='none';
 
 }
+else if(firstName.length>0||lastName.length>0||email.length>0||message.length>0){
+  text.style.display='block';
+  fields.forEach(input=> input.value='');
+textarea.forEach(textarea=> textarea.value='');
+}
+
+
+
+
   }
+  
 
     return (
       <Container className='contact-container'>
@@ -26,7 +45,7 @@ if(firstName.length==0||lastName.length==0||email.length==0||message.length==0){
         <div className="label-holder">
         <div className="label first-label">
           <FormLabel>First Name</FormLabel>
-          <input onChange={e=>setFirstName(e.target.value)} className='first' type="text" name="" id="first_name" placeholder='Enter your first name' />
+          <input onChange={e=>setFirstName(e.target.value)} className='first' type="text" name="" id="first_name" placeholder='Enter your first name'  /> 
           
           {error&&firstName.length<=0?<p className='error-message'>Please enter your first name</p>:""} 
           
@@ -51,13 +70,14 @@ if(firstName.length==0||lastName.length==0||email.length==0||message.length==0){
           {error&&message.length<=0?<p className='error-message'>Please enter a message</p>:""} 
         </div>
           <div className="checkbox">
-            <input className='check' type="checkbox" name="" id="" required/>
+            <input className='check' type="checkbox" name="" id="checker" />
             <FormLabel className='consent'>You agree to providing your data to{name} who may contact you.</FormLabel>
           </div>
 
-          <Button className="send-message" variant="primary" id="btn__submit" type="submit">
+          <Button   onclick="Contact()" className="send-message" variant="primary" id="btn__submit" type="submit">
      Send message
       </Button>
+      <h5 className='success' id='successful'>Message sent successfully</h5>
       </Form>
       </Container>
     )
